@@ -11,13 +11,11 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     const handleMagicLink = async () => {
-      const { data, error } = await supabase.auth.getSession()
+      const { error } = await supabase.auth.getSession()
 
       if (error) {
         console.error('Error during magic link sign-in:', error.message)
       } else {
-        console.log('User session:', data)
-
         router.push('/')
       }
     }
