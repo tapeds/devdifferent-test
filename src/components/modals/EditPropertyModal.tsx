@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Modal from '@/components/ui/modal';
 
 type EditPropertyFormData = {
   price: number;
@@ -69,66 +69,58 @@ export default function EditPropertyModal({ isOpen, onClose, property }: EditPro
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Edit Property</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="price">Price (Rp)</Label>
-                <Input
-                  id="price"
-                  type="number"
-                  placeholder="Enter property price"
-                  validation={{
-                    required: "Price is required",
-                    min: { value: 0, message: "Price must be positive" }
-                  }}
-                  disabled={message?.type === 'success'}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="image_url">Image URL</Label>
-                <Input
-                  id="image_url"
-                  type="url"
-                  placeholder="https://example.com/image.jpg"
-                  validation={{
-                    required: "Image URL is required",
-                    pattern: {
-                      value: /^https?:\/\/.+/,
-                      message: "Must be a valid URL"
-                    }
-                  }}
-                  disabled={message?.type === 'success'}
-                />
-              </div>
-              {!message?.type && (
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={mutation.isPending}>
-                    {mutation.isPending ? 'Updating...' : 'Update Property'}
-                  </Button>
-                </div>
-              )}
-              {message && (
-                <div
-                  className={`p-3 rounded-md text-center ${
-                    message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                  }`}
-                >
-                  {message.text}
-                </div>
-              )}
-            </form>
-          </FormProvider>
-        </CardContent>
-      </Card>
-    </div>
+    <Modal isOpen={isOpen} onClose={onClose} title='Edit Property'>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="price">Price (Rp)</Label>
+            <Input
+              id="price"
+              type="number"
+              placeholder="Enter property price"
+              validation={{
+                required: "Price is required",
+                min: { value: 0, message: "Price must be positive" }
+              }}
+              disabled={message?.type === 'success'}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="image_url">Image URL</Label>
+            <Input
+              id="image_url"
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              validation={{
+                required: "Image URL is required",
+                pattern: {
+                  value: /^https?:\/\/.+/,
+                  message: "Must be a valid URL"
+                }
+              }}
+              disabled={message?.type === 'success'}
+            />
+          </div>
+          {!message?.type && (
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={mutation.isPending}>
+                {mutation.isPending ? 'Updating...' : 'Update Property'}
+              </Button>
+            </div>
+          )}
+          {message && (
+            <div
+              className={`p-3 rounded-md text-center ${message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+                }`}
+            >
+              {message.text}
+            </div>
+          )}
+        </form>
+      </FormProvider>
+    </Modal>
   );
 } 

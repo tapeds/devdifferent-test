@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import Modal from '@/components/ui/modal';
 
 type DeletePropertyModalProps = {
   isOpen: boolean;
@@ -50,44 +50,34 @@ export default function DeletePropertyModal({ isOpen, onClose, property }: Delet
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Delete Property</CardTitle>
-          <CardDescription>
-            Are you sure you want to delete this property (Rp. {formatPrice(property.price)})?
-            This action cannot be undone.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {!message?.type && (
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={onClose}>
-                  Cancel
-                </Button>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => mutation.mutate()}
-                  disabled={mutation.isPending}
-                >
-                  {mutation.isPending ? 'Deleting...' : 'Delete Property'}
-                </Button>
-              </div>
-            )}
-            {message && (
-              <div
-                className={`p-3 rounded-md text-center ${
-                  message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                }`}
-              >
-                {message.text}
-              </div>
-            )}
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Delete Property"
+      description={`Are you sure you want to delete this property (Rp. ${formatPrice(property.price)})? This action cannot be undone.`}
+    >
+      <div className="space-y-4">
+        {!message?.type && (
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={onClose}>Cancel</Button>
+            <Button
+              variant="destructive"
+              onClick={() => mutation.mutate()}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? 'Deleting...' : 'Delete Property'}
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        )}
+        {message && (
+          <div
+            className={`p-3 rounded-md text-center ${message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+              }`}
+          >
+            {message.text}
+          </div>
+        )}
+      </div>
+    </Modal>
   );
 } 

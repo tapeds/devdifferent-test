@@ -1,7 +1,7 @@
 'use client'
 
 import CreatePropertyModal from "@/components/modals/CreatePropertyModal";
-import Markers from "@/components/Markers";
+import Markers from "@/components/map/Markers";
 import { AdvancedMarker, APIProvider, Map, MapMouseEvent } from "@vis.gl/react-google-maps";
 import { useState } from "react";
 
