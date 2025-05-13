@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import React from "react";
 import EditPropertyModal from "@/components/modals/EditPropertyModal";
