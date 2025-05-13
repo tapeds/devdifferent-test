@@ -26,7 +26,7 @@ function withAuth(Component: React.ComponentType) {
     }, [router]);
 
     if (isLoading) {
-      return <></>;
+      return null;
     }
 
     if (isAuthenticated) {
